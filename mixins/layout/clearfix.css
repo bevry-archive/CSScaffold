@@ -1,0 +1,30 @@
+/**
+* Quick Clearfix
+*
+* Clears an element of its floated children. The quick way.
+*/
+=clear
+{
+	overflow:auto;
+}
+
+/**
+* Clearfix
+*
+* Clears an element of its floated children.
+*/
+=clearfix
+{
+	+has-layout;
+	display:block;
+	
+	&:after 
+	{
+		content:'\\0020';
+		display:block;
+		height:0;
+		clear:both;
+		visibility:hidden;
+		font-size:0;
+	}
+}

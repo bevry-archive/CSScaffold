@@ -1,0 +1,72 @@
+=container($container_width = $grid_width)
+{	
+	width:$container_width;
+	margin:0 auto;
+	position:relative;
+}
+
+=container-with-gutters
+{ 
+	+container( calc($grid_width + $gutter_width)px );
+}
+
+=baseline-up($n)
+{
+	top:-baseline($n);
+}
+
+=baseline-down($n)
+{
+	top:baseline($n);
+}
+
+=span($n)
+{
+	width:calc( ($n * $column_width) + (($n * $gutter_width) - $gutter_width) )px;
+}
+
+=columns($n)
+{
+	+span($n);
+	+columns-base;
+}
+
+=columns-base
+{
+	position:relative;
+	float:left;
+	margin-right:$right_gutter_width;
+	margin-left:$left_gutter_width;	
+}
+
+=first
+{
+	margin-left:0;
+}
+
+=last
+{
+	margin-right:0;
+}
+
+=append($n)
+{
+	padding-right:calc( ($column_width + $gutter_width) * $n )px;
+}
+
+=prepend($n)
+{
+	padding-left:calc( ($column_width + $gutter_width) * $n )px;
+}
+
+=pull($n)
+{
+	left:calc( -(($column_width + $gutter_width) * $n) )px;
+	margin-right:calc( -(($column_width + $gutter_width) * $n - $gutter_width) )px;
+}
+
+=push($n)
+{
+	left:calc( ($column_width + $gutter_width) * $n )px;
+	margin-right:calc( ($column_width + $gutter_width) * $n + $gutter_width )px;
+}

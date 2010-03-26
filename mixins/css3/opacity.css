@@ -1,0 +1,14 @@
+/**
+* Opacity
+* 
+* Thanks to Chris Eppstein. Borrowed this one from Compass. 
+* Takes a number from 0 to 1.
+*/
+=opacity(!opacity = 1)
+{
+	opacity:!opacity;
+	-moz-opacity:!opacity;
+	-khtml-opacity:!opacity;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=calc(!opacity*100))";
+	filter:alpha(opacity=calc(!opacity*100));
+}

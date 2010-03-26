@@ -1,0 +1,16 @@
+@for $i from 1 to $column_count
+{
+	.columns-$i 		{ +span($i); }
+	.push-$i 			{ +push($i); }
+	.pull-$i 			{ +pull($i); }
+	.append-$i 			{ +append($i); }
+	.prepend-$i 		{ +prepend($i); }
+	.baseline-$i		{ height:baseline($i); }
+	.baseline-up-$i		{ +baseline-up($i); }
+	.baseline-down-$i	{ +baseline-down($i); }
+}
+
+enumerate('.columns-',1,$column_count)
+{
+	+columns-base;
+}
