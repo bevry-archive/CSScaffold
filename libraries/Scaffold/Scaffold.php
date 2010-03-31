@@ -316,7 +316,7 @@ class Scaffold extends Scaffold_Utils
 		{
 			define('SCAFFOLD_SYSPATH', self::fix_path($config['system']));
 			define('SCAFFOLD_DOCROOT', $config['document_root']);
-			define('SCAFFOLD_URLPATH', str_replace(SCAFFOLD_DOCROOT, '',SCAFFOLD_SYSPATH));
+			define('SCAFFOLD_URLPATH', $config['urlpath']);
 		}
 
 		/**
@@ -859,6 +859,7 @@ class Scaffold extends Scaffold_Utils
 
 		# Load include paths
 		$paths = self::include_paths();
+		
 
 		# Nothing found, yet
 		$found = NULL;

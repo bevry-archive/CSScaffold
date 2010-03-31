@@ -28,7 +28,9 @@ define('SCAFFOLD_PRODUCTION',false);
  * variable (I'm looking at you Windows) you can manually enter in the server path 
  * to the document root. Most of the time, you won't need to touch this.
  */
-$config['document_root'] = $_SERVER['DOCUMENT_ROOT'];
+if ( empty($config['document_root']) ) {
+	$config['document_root'] = $_SERVER['DOCUMENT_ROOT'];
+}
 
 /**
  * System Folder
@@ -39,7 +41,13 @@ $config['document_root'] = $_SERVER['DOCUMENT_ROOT'];
  * an absolute file path, or even relative to the document root and Scaffold
  * will take care of the rest. 
  */
-$config['system'] = './';
+if ( empty($config['system']) ) {
+	$config['system'] = './';
+}
+
+if ( empty($config['urlpath']) ) {
+	str_replace($config['document_root'], '', $config['system']);
+}
 
 /**
  * Cache Folder
@@ -51,7 +59,9 @@ $config['system'] = './';
  *
  * You will probably set this if you're using Scaffold within another framework.
  */
-$config['cache'] = './cache/';
+if ( empty($config['cache']) ) {
+	$config['cache'] = $config['system'].'cache/';
+}
 
 /**
  * Cache Lifetime
