@@ -16,5 +16,6 @@ Usage:
 =transition($trans) {
 	-webkit-transition: $trans;
 	-moz-transition: $trans;
+	-o-transition: $trans;
 	transition: $trans;
 }
