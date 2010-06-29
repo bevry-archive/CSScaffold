@@ -2,15 +2,6 @@
 CSS3 Transition Mixin
 @author Benjamin "balupton" Lupton {@link http://www.balupton.com}
 @version 1.0, April 25 2010
-
-Usage:
-	.button {
-		+cssbutton;
-	}
-	#signup_button {
-		+cssbutton_default;
-		+cssbutton_green;
-	}
 */
 
 =transition($trans) {
