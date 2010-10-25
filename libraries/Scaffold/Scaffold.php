@@ -174,7 +174,7 @@ class Scaffold extends Scaffold_Utils
 					Scaffold_Benchmark::start('system.file.' . basename($file));
 					
 					# Make sure this file is allowed
-					if(substr($file, 0, 4) == "http" OR substr($file, -4, 4) != ".css")
+					if(substr($file, 0, 4) == "http" OR (substr($file, -4, 4) != ".css" && substr($file, -5, 5) != ".scss"))
 					{
 						Scaffold::error('Scaffold cannot the requested file - ' . $file);
 					}
