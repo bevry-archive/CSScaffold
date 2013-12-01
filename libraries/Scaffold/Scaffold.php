@@ -301,7 +301,7 @@ class Scaffold extends Scaffold_Utils
 		if(SCAFFOLD_PRODUCTION === false)
 		{	
 			ini_set('display_errors', true);
-			error_reporting(E_ALL & ~E_STRICT);
+			error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 		}
 		else
 		{

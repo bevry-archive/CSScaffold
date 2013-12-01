@@ -8,7 +8,7 @@
  */
  
 ini_set('display_errors', TRUE);
-error_reporting(E_ALL & ~E_STRICT);
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED);
 
 /**
  * Set the server variable for document root. A lot of 
