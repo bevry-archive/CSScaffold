@@ -3,7 +3,7 @@
  * Scaffold_Cache
  *
  * Handles the file caching
- *
+ * 
  * @author Anthony Short
  * @package CSScaffold
  */
@@ -15,14 +15,14 @@ final class Scaffold_Cache
 	 * @var string
 	 */
 	private static $cache_path;
-
+	
 	/**
 	 * Cache lifetime
 	 *
 	 * @var string
 	 */
 	private static $lifetime = 0;
-
+	
 	/**
 	 * Is the cache locked?
 	 *
@@ -32,14 +32,12 @@ final class Scaffold_Cache
 
 	/**
 	 * Sets up the cache path
-	 *
-	 * @return return type
 	 */
 	public static function setup($path,$lifetime)
 	{
 		if (!is_dir($path))
 			Scaffold::log("Cache path does not exist. $path",0);
-
+			
 		if (!is_writable($path))
 			Scaffold::log("Cache path is not writable. $path",0);
 
@@ -47,8 +45,8 @@ final class Scaffold_Cache
 		self::lifetime($lifetime);
 	}
 
-
-	public function is_fresh($file)
+	
+	public static function is_fresh($file)
 	{
 		if( time() <= ( self::$lifetime +  self::modified($file) ) )
 		{
@@ -59,7 +57,7 @@ final class Scaffold_Cache
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Sets the lifetime of the cache
 	 *
@@ -70,23 +68,23 @@ final class Scaffold_Cache
 	{
 		self::$lifetime = $time;
 	}
-
+	
 	/**
 	 * Returns the particular cache file as a string
 	 *
 	 * @param $file
 	 * @return string $string The contents of the file
 	 */
-	public function open($file)
+	public static function open($file)
 	{
 		if(self::exists($file))
 		{
 			return file_get_contents(self::find($file));
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Returns the full path of the cache file, if it exists
 	 *
@@ -102,32 +100,32 @@ final class Scaffold_Cache
 		{
 			return true;
 		}
-
+			
 		return false;
 	}
-
+	
 	/**
 	 * Returns the last modified date of a cache file
 	 *
 	 * @param $file
 	 * @return int
 	 */
-	public function modified($file)
+	public static function modified($file)
 	{
 		return ( self::exists($file) ) ? (int) filemtime(self::find($file)) : 0 ;
 	}
-
+	
 	/**
 	 * Finds a file inside the cache and returns it's full path
 	 *
 	 * @param $file
 	 * @return string
 	 */
-	public function find($file)
+	public static function find($file)
 	{
 		if(self::exists($file))
 			return self::$cache_path.$file;
-
+			
 		return false;
 	}
 
@@ -138,12 +136,12 @@ final class Scaffold_Cache
 	 * @author Anthony Short
 	 */
 	public static function write( $data, $target = '', $append = false )
-	{
+	{	
 		# Create the cache file
 		self::create(dirname($target));
 
 		$target = self::$cache_path.$target;
-
+		
 		if(is_array($data))
 			$data = serialize($data);
 
@@ -156,11 +154,11 @@ final class Scaffold_Cache
 		{
 			file_put_contents($target, $data);
 		}
-
+		
 		# Set its parmissions
 		chmod($target, 0777);
 		touch($target, time());
-
+		
 		return true;
 	}
 
@@ -177,38 +175,38 @@ final class Scaffold_Cache
 			unlink(self::find($file));
 			return true;
 		}
-
+			
 		return false;
 	}
-
+	
 	/**
 	 * Remove a cache directory and sub-directories
 	 *
 	 * @param $dir
 	 * @return boolean
 	 */
-	public function remove_dir($dir)
+	public static function remove_dir($dir)
 	{
 		if(!is_dir($dir))
 		{
 			$dir = self::find($dir);
 		}
 
-		$files = glob( $dir . '*', GLOB_MARK );
-
+		$files = glob( $dir . '*', GLOB_MARK ); 
+		
 		foreach( $files as $file )
-		{
+		{ 
 			if( is_dir($file) )
-			{
+			{ 
 				self::remove_dir( $file );
-				rmdir( $file );
+				rmdir( $file ); 
 			}
-			else
+			else 
 			{
-				unlink( $file );
+				unlink( $file ); 
 			}
 		}
-
+		
 		return true;
 	}
 
@@ -216,25 +214,25 @@ final class Scaffold_Cache
 	 * Create the cache file directory
 	 */
 	public static function create($path)
-	{
+	{	
 		# If it already exists
 		if(is_dir(self::$cache_path.$path))
 			return true;
 
 		# Create the directories inside the cache folder
 		$next = "";
-
+				
 		foreach(explode('/',$path) as $dir)
 		{
 			$next = '/' . $next . '/' . $dir;
 
-			if(!is_dir(self::$cache_path.$next))
+			if(!is_dir(self::$cache_path.$next)) 
 			{
 				mkdir(self::$cache_path.$next);
 				chmod(self::$cache_path.$next, 0777);
 			}
 		}
-
+		
 		return true;
 	}
 }
