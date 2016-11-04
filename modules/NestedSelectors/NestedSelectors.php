@@ -296,11 +296,19 @@ class NestedSelectors
 		# Add semi-colons to the ends of property lists which don't have them
 		$xml = preg_replace('/((\:|\+)[^;])*?\}/', "$1;}", $xml);
 
-		# Transform properties
-		$xml = preg_replace('/([-_A-Za-z*]+)\s*:\s*([^;}{]+)(?:;)/ie', "'<property name=\"'.trim('$1').'\" value=\"'.trim('$2').'\" />\n'", $xml);
+        # Transform properties
+        $xml = preg_replace_callback(
+          '/([-_A-Za-z*]+)\s*:\s*([^;}{]+)(?:;)/i',
+          function($m) { return "<property name=\"".trim($m[1])."\" value=\"".trim($m[2])."\" />\n"; }
+          , $xml
+        );
 
 		# Transform selectors
-		$xml = preg_replace('/(\s*)([_@#.0-9A-Za-z\/\+~*\|\(\)\[\]^\"\'=\$:,\s-]*?)\{/me', "'$1\n<rule selector=\"'.preg_replace('/\s+/', ' ', trim('$2')).'\">\n'", $xml);
+        $xml = preg_replace_callback(
+          '/(\s*)([_@#.0-9A-Za-z\/\+~*\|\(\)\[\]^\"\'=\$:,\s-]*?)\{/m',
+          function($m) { return $m[1]."\n<rule selector=\"".preg_replace('/\s+/', ' ', trim($m[2]))."\">\n"; },
+          $xml
+        );
 
 		# Close rules
 		$xml = preg_replace('/\;?\s*\}/', "\n</rule>", $xml);
@@ -310,9 +318,15 @@ class NestedSelectors
 				
 		# Tie it up with a bow
 		$xml = '<?xml version="1.0" ?'.">\r<css>\r\t$xml\r</css>\r";
-		
 
-		return simplexml_load_string($xml);
+
+        libxml_use_internal_errors(true);
+        $data = simplexml_load_string($xml);
+        if( !$data ) {
+            throw new Exception('Nested Selectors: Er ontbreekt een { of } teken.');
+        }
+        libxml_use_internal_errors(false);
+        return $data;
 	}
 	
 	/**
