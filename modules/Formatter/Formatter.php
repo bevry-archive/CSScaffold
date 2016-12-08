@@ -307,11 +307,7 @@ class Formatter
     public static function prettify($css)
     {
   		// escape data protocol to prevent processing
-        $css = preg_replace_callback(
-          '#(url\(data:[^\)]+\))#',
-          function($m) {
-              return 'esc('.base64_encode($m[1]).')';
-          }, $css);
+    	$css = preg_replace('#(url\(data:[^\)]+\))#e', "'esc('.base64_encode('$1').')'", $css);
   
   		// line break after semi-colons (for @import)
     	$css = str_replace(';', ";\r\r", $css);
@@ -339,12 +335,8 @@ class Formatter
     			$css = str_replace($oops, preg_replace('#,\r#', ', ', $oops), $css);
     		}
     	}
-
-        $css = preg_replace_callback(
-          '#esc\(([^\)]+)\)#',
-          function($m) {
-              return base64_decode($m[1]);
-          }, $css); // unescape escaped blocks
+    	
+    	$css = preg_replace('#esc\(([^\)]+)\)#e', "base64_decode('$1')", $css); // unescape escaped blocks
     	
     	// indent nested @media rules
     	if (preg_match('#@media[^\{]*\{(.*\}\s*)\}#', $css, $m))

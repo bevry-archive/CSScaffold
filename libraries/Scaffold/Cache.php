@@ -32,8 +32,10 @@ final class Scaffold_Cache
 
 	/**
 	 * Sets up the cache path
+	 *
+	 * @return return type
 	 */
-	public static function setup($path,$lifetime)
+	public function setup($path,$lifetime)
 	{
 		if (!is_dir($path))
 			Scaffold::log("Cache path does not exist. $path",0);
@@ -46,7 +48,7 @@ final class Scaffold_Cache
 	}
 
 	
-	public static function is_fresh($file)
+	public function is_fresh($file)
 	{
 		if( time() <= ( self::$lifetime +  self::modified($file) ) )
 		{
@@ -64,7 +66,7 @@ final class Scaffold_Cache
 	 * @param $time
 	 * @return void
 	 */
-	public static function lifetime($time)
+	public function lifetime($time)
 	{
 		self::$lifetime = $time;
 	}
@@ -75,7 +77,7 @@ final class Scaffold_Cache
 	 * @param $file
 	 * @return string $string The contents of the file
 	 */
-	public static function open($file)
+	public function open($file)
 	{
 		if(self::exists($file))
 		{
@@ -91,7 +93,7 @@ final class Scaffold_Cache
 	 * @param $file
 	 * @return string
 	 */
-	public static function exists($file)
+	public function exists($file)
 	{
 		if(is_file(self::$cache_path.$file))
 			return true;
@@ -110,7 +112,7 @@ final class Scaffold_Cache
 	 * @param $file
 	 * @return int
 	 */
-	public static function modified($file)
+	public function modified($file)
 	{
 		return ( self::exists($file) ) ? (int) filemtime(self::find($file)) : 0 ;
 	}
@@ -121,7 +123,7 @@ final class Scaffold_Cache
 	 * @param $file
 	 * @return string
 	 */
-	public static function find($file)
+	public function find($file)
 	{
 		if(self::exists($file))
 			return self::$cache_path.$file;
@@ -135,7 +137,7 @@ final class Scaffold_Cache
 	 * @return void
 	 * @author Anthony Short
 	 */
-	public static function write( $data, $target = '', $append = false )
+	public function write( $data, $target = '', $append = false )
 	{	
 		# Create the cache file
 		self::create(dirname($target));
@@ -185,7 +187,7 @@ final class Scaffold_Cache
 	 * @param $dir
 	 * @return boolean
 	 */
-	public static function remove_dir($dir)
+	public function remove_dir($dir)
 	{
 		if(!is_dir($dir))
 		{
@@ -213,7 +215,7 @@ final class Scaffold_Cache
 	/**
 	 * Create the cache file directory
 	 */
-	public static function create($path)
+	public function create($path)
 	{	
 		# If it already exists
 		if(is_dir(self::$cache_path.$path))
